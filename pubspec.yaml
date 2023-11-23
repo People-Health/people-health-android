@@ -29,6 +29,8 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   http: ^1.1.0
+  location: ^5.0.3
+  web_socket_channel: ^2.4.0
   flutter:
     sdk: flutter
 
@@ -53,7 +55,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  assets:
+    - lib/assets/images/Logo.jpeg
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
