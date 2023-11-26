@@ -14,12 +14,26 @@ class DetailsPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Nome: ${acidentado['nome']}'),
-            Text('Idade: ${acidentado['idade']}'),
+            Text(
+              'Nome: ${acidentado['nome']}',
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Idade: ${acidentado['idade']}',
+              style: const TextStyle(
+                fontSize: 20,
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+
 }

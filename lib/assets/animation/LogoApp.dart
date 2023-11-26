@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class LogoApp extends StatefulWidget {
@@ -16,7 +18,7 @@ class _LogoAppState extends State<LogoApp> with SingleTickerProviderStateMixin {
     super.initState();
 
     controller = AnimationController(
-      duration: const Duration(seconds: 10),
+      duration: const Duration(seconds: 2),
       vsync: this,
     )..repeat(reverse: true);
 
@@ -34,12 +36,16 @@ class _LogoAppState extends State<LogoApp> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return RotationTransition(
-      turns: animation,
-      child: const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: FlutterLogo(size: 50.0),
-      ),
-    );
+    return AnimatedBuilder(
+        animation: animation,
+        builder: (context, child) {
+          return RotationTransition(
+            turns: animation,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Image.file('../images/Logo.jpeg' as File),
+            ),
+          );
+        });
   }
 }
