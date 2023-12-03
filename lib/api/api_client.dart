@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:web_socket_channel/io.dart';
 
 class APIClient {
-  static const String serverUrl = 'ws://localhost:8080/flutter-app';
+  static const String serverUrl = 'wss://10.0.2.2:8080/flutter-app';
   final channel = IOWebSocketChannel.connect(serverUrl);
 
   Future<Map<String, dynamic>?> authenticateUser(
