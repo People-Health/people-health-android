@@ -28,13 +28,10 @@ class _LoginPageState extends State<LoginPage>
 
   Future<void> _authenticateUser(BuildContext context) async {
     var apiClient = APIClient();
-    apiClient.authenticateUser(
+    final userData = await apiClient.authenticateUser(
       _usernameController.text,
       _passwordController.text,
     );
-
-    final user = await apiClient.channel.stream.first;
-    final userData = json.decode(user);
 
     if (mounted) {
       if (userData != null) {

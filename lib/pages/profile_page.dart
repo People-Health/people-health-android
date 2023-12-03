@@ -31,15 +31,31 @@ class _ProfilePageState extends State<ProfilePage> {
     await locationService.init();
 
     if (widget.user['role'] == 'socorrista') {
-      channel = IOWebSocketChannel.connect('ws://localhost:8080/flutter-app');
+      var apiClient = APIClient();
       while (true) {
         var locationData = await locationService.getLocation();
-        channel.sink.add({
-          'userId': widget.user['id'],
-          'latitude': locationData.latitude,
-          'longitude': locationData.longitude,
-        });
+        if (locationData.latitude != null && locationData.longitude != null) {
+          apiClient.sendLocation(locationData.latitude!, locationData.longitude!);
+        }
         await Future.delayed(const Duration(seconds: 10));
+      }
+    }
+  }
+
+  Future<void> _searchAcidentado(BuildContext context) async {
+    var apiClient = APIClient();
+    final acidentado = await apiClient.fetchAcidentadoByRG(_rgController.text);
+
+    if (mounted) {
+      if (acidentado != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => DetailsPage(acidentado)),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('RG não encontrado')),
+        );
       }
     }
   }
@@ -73,25 +89,5 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
-  }
-
-  Future<void> _searchAcidentado(BuildContext context) async {
-    APIClient().fetchAcidentadoByRG(_rgController.text);
-
-    final acidentadoData = await APIClient().channel.stream.first;
-    final acidentado = json.decode(acidentadoData);
-
-    if (mounted) {
-      if (acidentado != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => DetailsPage(acidentado)),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('RG não encontrado')),
-        );
-      }
-    }
   }
 }
