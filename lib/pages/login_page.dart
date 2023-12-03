@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import '../api/api_client.dart';
 import 'profile_page.dart';
@@ -25,16 +27,20 @@ class _LoginPageState extends State<LoginPage>
   }
 
   Future<void> _authenticateUser(BuildContext context) async {
-    var user = await APIClient.authenticateUser(
+    var apiClient = APIClient();
+    apiClient.authenticateUser(
       _usernameController.text,
       _passwordController.text,
     );
 
+    final user = await apiClient.channel.stream.first;
+    final userData = json.decode(user);
+
     if (mounted) {
-      if (user != null) {
+      if (userData != null) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ProfilePage(user)),
+          MaterialPageRoute(builder: (context) => ProfilePage(userData)),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

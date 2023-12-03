@@ -43,7 +43,7 @@ class _LogoAppState extends State<LogoApp> with SingleTickerProviderStateMixin {
             turns: animation,
             child: Padding(
               padding: EdgeInsets.all(8.0),
-              child: Image.file('../images/Logo.jpeg' as File),
+              child: FlutterLogo(),
             ),
           );
         });

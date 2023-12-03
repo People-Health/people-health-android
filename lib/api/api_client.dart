@@ -1,36 +1,30 @@
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:web_socket_channel/io.dart';
 
 class APIClient {
-  static const String serverUrl = 'http://seu-servidor-java.com';
+  static const String serverUrl = 'ws://localhost:8080/flutter-app';
+  final channel = IOWebSocketChannel.connect(serverUrl);
 
-  static Future<Map<String, dynamic>?> authenticateUser(String username, String password) async {
-    final response = await http.post(
-      Uri.parse('$serverUrl/authenticate'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({
-        'usuario': username,
-        'senha': password,
-      }),
-    );
+  Future<Map<String, dynamic>?> authenticateUser(
+      String username, String password) async {
+    channel.sink.add(json.encode({
+      'usuario': username,
+      'senha': password,
+    }));
 
-    return _parseResponse(response);
+    return _parseResponse();
   }
 
-  static Future<Map<String, dynamic>?> fetchAcidentadoByRG(String rg) async {
-    final response = await http.get(
-      Uri.parse('$serverUrl/fetchAcidentado/$rg'),
-      headers: {'Content-Type': 'application/json'},
-    );
+  Future<Map<String, dynamic>?> fetchAcidentadoByRG(String rg) async {
+    channel.sink.add(json.encode({
+      'rg': rg,
+    }));
 
-    return _parseResponse(response);
+    return _parseResponse();
   }
 
-  static Map<String, dynamic>? _parseResponse(http.Response response) {
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      return null;
-    }
+  Future<Map<String, dynamic>?> _parseResponse() async {
+    final response = await channel.stream.first;
+    return json.decode(response);
   }
 }

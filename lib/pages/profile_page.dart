@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import '../api/locationService.dart';
 import '../api/api_client.dart';
@@ -29,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
     await locationService.init();
 
     if (widget.user['role'] == 'socorrista') {
-      channel = IOWebSocketChannel.connect('ws://seu-servidor-java.com/socket');
+      channel = IOWebSocketChannel.connect('ws://localhost:8080/flutter-app');
       while (true) {
         var locationData = await locationService.getLocation();
         channel.sink.add({
@@ -74,7 +76,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _searchAcidentado(BuildContext context) async {
-    var acidentado = await APIClient.fetchAcidentadoByRG(_rgController.text);
+    APIClient().fetchAcidentadoByRG(_rgController.text);
+
+    final acidentadoData = await APIClient().channel.stream.first;
+    final acidentado = json.decode(acidentadoData);
 
     if (mounted) {
       if (acidentado != null) {
