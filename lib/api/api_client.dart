@@ -6,8 +6,8 @@ class APIClient {
   static const String httpServerUrl = 'http://10.0.2.2:8080/flutter-app';
   static const String wsServerUrl = 'ws://10.0.2.2:8080/flutter-app';
   final channel = IOWebSocketChannel.connect(wsServerUrl);
-
   Future<Map<String, dynamic>?> authenticateUser(
+
       String username, String password) async {
     final response = await http.post(
       Uri.parse('$httpServerUrl/authenticate'),
