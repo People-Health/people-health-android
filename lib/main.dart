@@ -22,17 +22,18 @@ class MyApp extends StatelessWidget {
 
 
 
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import '../api/locationService.dart';
 import 'package:web_socket_channel/io.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -40,13 +41,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -57,6 +58,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   late LocationService locationService;
   late IOWebSocketChannel channel;
+
 
   @override
   void initState() {
@@ -69,11 +71,16 @@ class _MyHomePageState extends State<MyHomePage> {
     await locationService.init();
 
     channel = IOWebSocketChannel.connect('ws://10.0.2.2:8080/flutter-app');
+    var locationData = await locationService.getLocation();
+     var lat = locationData.latitude!;
+     var long = locationData.longitude!;
+
     while (true) {
-      var locationData = await locationService.getLocation();
-      String locationString = '${locationData.latitude}, ${locationData.longitude}';
+      lat += 0.002;
+      long += 0.002;
+      String locationString = '$lat, $long';
       channel.sink.add(locationString);
-      await Future.delayed(const Duration(seconds: 10));
+      await Future.delayed(const Duration(seconds: 2));
     }
   }
 
@@ -83,8 +90,8 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Text('Obtendo localização...'),
+      body: const  Center(
+        child: Text('Obtendo localização ..'),
       ),
     );
   }

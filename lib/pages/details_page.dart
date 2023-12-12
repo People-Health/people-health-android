@@ -23,7 +23,7 @@ class DetailsPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               'Idade: ${acidentado['idade']}',
               style: const TextStyle(

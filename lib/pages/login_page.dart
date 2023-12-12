@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import '../api/api_client.dart';
@@ -135,7 +134,7 @@ class _LoginPageState extends State<LoginPage>
                             color: Colors.blue.withOpacity(0.2),
                             spreadRadius: 5,
                             blurRadius: 7,
-                            offset: Offset(0, 1),
+                            offset: const Offset(0, 1),
                           ),
                         ],
                         borderRadius: BorderRadius.circular(5),

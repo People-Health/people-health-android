@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -41,7 +40,7 @@ class _LogoAppState extends State<LogoApp> with SingleTickerProviderStateMixin {
         builder: (context, child) {
           return RotationTransition(
             turns: animation,
-            child: Padding(
+            child: const Padding(
               padding: EdgeInsets.all(8.0),
               child: FlutterLogo(),
             ),
